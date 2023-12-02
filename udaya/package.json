@@ -1,43 +1,67 @@
 {
-  "name": "udaya",
-  "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "@emotion/react": "^11.11.1",
-    "@emotion/styled": "^11.11.0",
-    "@mui/material": "^5.14.18",
-    "@mui/styled-engine-sc": "^6.0.0-alpha.6",
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1",
-    "styled-components": "^6.1.1",
-    "web-vitals": "^2.1.4"
-  },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "dev": "next",
+    "build": "next build",
+    "start": "next start",
+    "i18n": "i18next"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+  "dependencies": {
+    "@chakra-ui/icons": "^2.0.2",
+    "@chakra-ui/react": "^2.2.1",
+    "@chakra-ui/theme-tools": "^2.0.2",
+    "@emotion/react": "^11.9.0",
+    "@emotion/styled": "^11.9.0",
+    "@fontsource/inter": "^4.5.15",
+    "@fontsource/source-serif-pro": "^4.5.9",
+    "@fontsource/unbounded": "^4.5.1",
+    "@getalby/bitcoin-connect-react": "^2.0.0",
+    "@nostr-dev-kit/ndk": "^2.0.3",
+    "@nostr-dev-kit/ndk-cache-dexie": "^2.0.3",
+    "@tanstack/react-query": "^4.35.0",
+    "@void-cat/api": "^1.0.7",
+    "bech32": "^2.0.0",
+    "core-js": "^3.33.0",
+    "dexie": "^3.2.3",
+    "dexie-react-hooks": "^1.1.3",
+    "framer-motion": "^6.3.0",
+    "i18next": "^22.5.0",
+    "jotai": "^2.0.4",
+    "js-levenshtein": "^1.1.6",
+    "light-bolt11-decoder": "^3.0.0",
+    "lodash": "^4.17.21",
+    "next": "^13.5.3",
+    "next-i18next": "^13.2.2",
+    "next-pwa": "^5.6.0",
+    "nostr-tools": "1.14.2",
+    "prettier": "^2.8.7",
+    "qr-code-styling": "^1.6.0-rc.1",
+    "react": "^18.2.0",
+    "react-datepicker": "^4.18.0",
+    "react-dom": "^18.2.0",
+    "react-helmet": "^6.1.0",
+    "react-i18next": "^12.3.1",
+    "react-intersection-observer": "^9.4.3",
+    "react-markdown": "^8.0.7",
+    "react-markdown-editor-lite": "^1.3.4",
+    "react-twitter-embed": "^4.0.4",
+    "rehype-katex": "^6.0.2",
+    "rehype-raw": "^6.1.1",
+    "remark-gfm": "^3.0.1",
+    "remark-mark-plus": "^1.0.21",
+    "remark-math": "^5.1.1",
+    "remark-toc": "^8.0.1",
+    "slugify": "^1.6.6",
+    "use-text-selection": "^1.1.5",
+    "usehooks-ts": "^2.9.1",
+    "ws": "^8.13.0",
+    "zapthreads": "0.5.0"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "devDependencies": {
+    "@types/node": "^20.4.2",
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "@webbtc/webln-types": "^2.0.1",
+    "typescript": "^4.7.2"
   }
 }
