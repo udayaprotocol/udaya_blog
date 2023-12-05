@@ -29,6 +29,7 @@ import {
   defaultRelays,
   relayListAtom,
   sessionAtom,
+  walletAtom,
   contactListAtom,
   relaysAtom,
 } from "@habla/state";
@@ -71,10 +72,11 @@ function TagSelector({ tags, onChange }) {
   );
 }
 
-export default function NewUser({ onDone }) {
+export default function NewUser({ onDone,walletAddress }) {
   const ndk = useNdk();
   const toast = useToast();
   const [session, setSession] = useAtom(sessionAtom);
+  const [wallet, setWallet] = useAtom(walletAtom);
   const [, setRelayList] = useAtom(relayListAtom);
   const [isPublishing, setIsPublishing] = useState(false);
   const [, setSteps] = useAtom(stepsAtom);
@@ -208,7 +210,13 @@ export default function NewUser({ onDone }) {
             method: "privkey",
             pubkey,
             privkey,
+            walletAddress
           });
+          setWallet({
+            walletAddress,
+            pubkey,
+            privkey
+          })
         } catch (error) {
           console.error(error);
         } finally {
