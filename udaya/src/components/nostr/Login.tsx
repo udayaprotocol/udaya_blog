@@ -291,7 +291,7 @@ function ProfileMenu({ pubkey, relays, onClose }) {
     setRelayList(null);
     setSession(null);
     ndk.signer = undefined;
-    await disconnect()
+    await disconnect();
     onClose();
 
   }
@@ -484,21 +484,24 @@ export default function Login() {
     }
   }
   async function loginWithWallet() {
-      await connect();
+     await  connect();
       debugger;
       console.log(pubkey);
-      setWallet(account)
-      if(!walletSession){
-        onOpen();
-      }else{
-        if(!session){
-          loginWithPrivateKey(walletSession.nostrPrivkey);
+      if(account){
+        setWallet(account)
+        if(!walletSession){
+          onOpen();
         }else{
-          if (session.privkey != walletSession.nostrPrivkey){
+          if(!session){
             loginWithPrivateKey(walletSession.nostrPrivkey);
+          }else{
+            if (session.privkey != walletSession.nostrPrivkey){
+              loginWithPrivateKey(walletSession.nostrPrivkey);
+            }
           }
-        }
-      }  
+        }  
+      }
+     
   }
   useEffect(() => {
     if (!session || ndk.signer) {
