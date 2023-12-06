@@ -54,6 +54,7 @@ import { useEvents } from "@habla/nostr/hooks";
 import {
   relaysAtom,
   sessionAtom,
+  walletAtom,
   pubkeyAtom,
   privkeyAtom,
   contactListAtom,
@@ -80,6 +81,7 @@ import {
   deprecatedPeopleLists,
   deprecatedBookmarkLists,
 } from "@habla/const";
+import useUniPass from "@habla/hooks/useUniPass";
 
 function LoginDialog({ isOpen, onClose }) {
   const ndk = useNdk();
@@ -197,13 +199,14 @@ function LoginDialog({ isOpen, onClose }) {
 
 type LoginModalFlow = "login" | "onboarding";
 
-function LoginModal({ isOpen, onClose }) {
+function LoginModal({ isOpen, onClose,walletAddress }) {
   const ndk = useNdk();
   const router = useRouter();
-  const [flow, setFlow] = useState<LoginModalFlow | null>(null);
+  const [flow, setFlow] = useState<LoginModalFlow | null>("onboarding");
   const { t } = useTranslation("common");
   const onboardingModal = useDisclosure("onboarding");
   const [session, setSession] = useAtom(sessionAtom);
+ 
   const pubkey = useAtomValue(pubkeyAtom);
 
   function continueOnboarding() {
@@ -254,7 +257,7 @@ function LoginModal({ isOpen, onClose }) {
             {flow === "login" && (
               <LoginDialog isOpen={isOpen} onClose={closeModal} />
             )}
-            {flow === "onboarding" && <NewUser onDone={continueOnboarding} />}
+            {flow === "onboarding" && <NewUser onDone={continueOnboarding} wallet={walletAddress} />}
           </ModalBody>
         </ModalContent>
       </Modal>
@@ -263,6 +266,7 @@ function LoginModal({ isOpen, onClose }) {
 }
 
 function ProfileMenu({ pubkey, relays, onClose }) {
+  const { provider, account, chainId, connect, connectEagerly, disconnect } = useUniPass();
   const { t } = useTranslation("common");
   const ndk = useNdk();
   const router = useRouter();
@@ -279,14 +283,17 @@ function ProfileMenu({ pubkey, relays, onClose }) {
     });
   }, [pubkey, relays]);
 
-  function logOut(ev) {
+  async function logOut(ev) {
+    
     setPeopleLists({});
     setBookmarkLists({});
     setContactList(null);
     setRelayList(null);
     setSession(null);
     ndk.signer = undefined;
+    await disconnect()
     onClose();
+
   }
 
   return (
@@ -449,10 +456,12 @@ export default function Login() {
   const ndk = useNdk();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [session, setSession] = useAtom(sessionAtom);
+  const [walletSession, setWalletSession] = useAtom(walletAtom);
   const pubkey = useAtomValue(pubkeyAtom);
   const [privkey, setPrivkey] = useAtom(privkeyAtom);
   const [isLoggedIn, setIsLoggedIn] = useState();
-
+  const [wallet, setWallet] = useState("");
+  const { provider, account, chainId, connect, connectEagerly, disconnect } = useUniPass();
   async function loginWithPrivateKey(privkey: string) {
     try {
       const signer = new NDKPrivateKeySigner(privkey);
@@ -463,13 +472,34 @@ export default function Login() {
         privkey,
         pubkey: user.pubkey,
       });
+      setWalletSession({
+        address: wallet,
+        nostrPubkey:user.pubkey,
+        nostrPrivkey:privkey
+      })
       setPrivkey(null);
       setIsLoggedIn(true);
     } catch (error) {
       console.error(`Autologin failed: ${error}`);
     }
   }
-
+  async function loginWithWallet() {
+      await connect();
+      debugger;
+      console.log(pubkey);
+      setWallet(account)
+      if(!walletSession){
+        onOpen();
+      }else{
+        if(!session){
+          loginWithPrivateKey(walletSession.nostrPrivkey);
+        }else{
+          if (session.privkey != walletSession.nostrPrivkey){
+            loginWithPrivateKey(walletSession.nostrPrivkey);
+          }
+        }
+      }  
+  }
   useEffect(() => {
     if (!session || ndk.signer) {
       return;
@@ -491,10 +521,10 @@ export default function Login() {
     <LoggedInUser pubkey={pubkey} isLoggedIn={isLoggedIn} onClose={onClose} />
   ) : (
     <>
-      <Button colorScheme="orange" onClick={onOpen}>
+      <Button colorScheme="orange" onClick={loginWithWallet}>
         {t("get-started")}
       </Button>
-      <LoginModal isOpen={isOpen} onClose={onClose} />
+      <LoginModal isOpen={isOpen} onClose={onClose}  wallet={wallet}/>
     </>
   );
 }

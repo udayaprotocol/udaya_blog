@@ -2,12 +2,18 @@ import { atom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 import { NostrEvent } from "@nostr-dev-kit/ndk";
 
-import type { Session, Pubkey, Privkey, Tags } from "@habla/types";
+import type { Session, Pubkey, Privkey, Tags,Wallet } from "@habla/types";
 import { findTags } from "@habla/tags";
 
 // Login
 export const sessionAtom = atomWithStorage<Session | null>("session", null);
+export const walletAtom = atomWithStorage<Wallet | null>("udaya_wallet", null);
+// export const addressAtom = atom<Pubkey | undefined>((get) => {
+//   const session = get(sessionAtom);
+//   return session?.pubkey;
+// });
 export const pubkeyAtom = atom<Pubkey | undefined>((get) => {
+  debugger
   const session = get(sessionAtom);
   return session?.pubkey;
 });

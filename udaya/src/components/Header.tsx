@@ -12,6 +12,9 @@ import {
 import { useHover } from "usehooks-ts";
 import Logo from "@habla/icons/Logo";
 import LogoAnimated from "@habla/icons/LogoAnimated";
+import {ColorModeSwitcher} from "./ColorModeSwitcher"
+
+
 
 const Login = dynamic(() => import("@habla/components/nostr/Login"), {
   ssr: false,
@@ -21,6 +24,21 @@ export default function Header(props: FlexProps) {
   const logoColor = useColorModeValue("black", "white");
   const ref = useRef(null);
   const isHovering = useHover(ref);
+  
+  // const getConnectionButtons = () => {
+  //   if (account) {
+  //     return (
+  //       <Button onClick={_disconnect} type="dashed">
+  //         Disconnect
+  //       </Button>
+  //     );
+  //   }
+  //   return (
+  //     <Button onClick={connect} type="primary">
+  //       Connect
+  //     </Button>
+  //   );
+  // };
   return (
     <Flex
       as="header"
@@ -39,7 +57,11 @@ export default function Header(props: FlexProps) {
           <Image boxSize={14}   src="logo.png"></Image>
         </Link>
       </Flex>
+      <Flex>
+      
+      </Flex>
       <Flex alignItems="center" gap="1">
+        <ColorModeSwitcher justifySelf="flex-end" />
         <Login />
       </Flex>
     </Flex>
