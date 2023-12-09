@@ -13,7 +13,6 @@ export const walletAtom = atomWithStorage<Wallet | null>("udaya_wallet", null);
 //   return session?.pubkey;
 // });
 export const pubkeyAtom = atom<Pubkey | undefined>((get) => {
-  debugger
   const session = get(sessionAtom);
   return session?.pubkey;
 });
