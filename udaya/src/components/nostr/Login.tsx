@@ -230,7 +230,7 @@ function LoginModal({ isOpen, onClose,walletAddress }) {
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            {flow === null && (
+            {/* {flow === null && (
               <Stack gap={4} mb={4}>
                 <Stack gap={2}>
                   <Heading fontSize="lg" mb={2}>
@@ -252,12 +252,13 @@ function LoginModal({ isOpen, onClose,walletAddress }) {
                   </Button>
                 </Stack>
               </Stack>
-            )}
+            )} */}
 
-            {flow === "login" && (
+            {/* {flow === "login" && (
               <LoginDialog isOpen={isOpen} onClose={closeModal} />
-            )}
-            {flow === "onboarding" && <NewUser onDone={continueOnboarding} wallet={walletAddress} />}
+            )} */}
+            {/* flow === "onboarding" && */}
+             <NewUser onDone={continueOnboarding} walletAddress={walletAddress} />
           </ModalBody>
         </ModalContent>
       </Modal>
@@ -291,7 +292,7 @@ function ProfileMenu({ pubkey, relays, onClose }) {
     setRelayList(null);
     setSession(null);
     ndk.signer = undefined;
-    await disconnect()
+    await disconnect();
     onClose();
 
   }
@@ -462,6 +463,9 @@ export default function Login() {
   const [isLoggedIn, setIsLoggedIn] = useState();
   const [wallet, setWallet] = useState("");
   const { provider, account, chainId, connect, connectEagerly, disconnect } = useUniPass();
+  // useEffect(() => {
+  //   connectEagerly();
+  // }, []);
   async function loginWithPrivateKey(privkey: string) {
     try {
       const signer = new NDKPrivateKeySigner(privkey);
@@ -473,10 +477,10 @@ export default function Login() {
         pubkey: user.pubkey,
       });
       setWalletSession({
-        address: wallet,
-        nostrPubkey:user.pubkey,
-        nostrPrivkey:privkey
-      })
+        'address': wallet,
+        'nostrPubkey':user.pubkey,
+       'nostrPrivkey':privkey
+      });
       setPrivkey(null);
       setIsLoggedIn(true);
     } catch (error) {
@@ -485,20 +489,25 @@ export default function Login() {
   }
   async function loginWithWallet() {
       await connect();
-      debugger;
-      console.log(pubkey);
-      setWallet(account)
-      if(!walletSession){
-        onOpen();
-      }else{
-        if(!session){
-          loginWithPrivateKey(walletSession.nostrPrivkey);
-        }else{
-          if (session.privkey != walletSession.nostrPrivkey){
-            loginWithPrivateKey(walletSession.nostrPrivkey);
-          }
+      const user= window.sessionStorage.getItem("UP-A");
+      if(user){
+          const userInfo = JSON.parse(user)
+          setWallet(userInfo.address)
+          if(!walletSession){
+            onOpen();
+          }else{
+            if(!session){
+              loginWithPrivateKey(walletSession.nostrPrivkey);
+            }else{
+              if (session.privkey != walletSession.nostrPrivkey){
+                loginWithPrivateKey(walletSession.nostrPrivkey);
+              }
+            }
+          }  
         }
-      }  
+    
+    
+     
   }
   useEffect(() => {
     if (!session || ndk.signer) {
@@ -524,7 +533,7 @@ export default function Login() {
       <Button colorScheme="orange" onClick={loginWithWallet}>
         {t("get-started")}
       </Button>
-      <LoginModal isOpen={isOpen} onClose={onClose}  wallet={wallet}/>
+      <LoginModal isOpen={isOpen} onClose={onClose}  walletAddress={wallet}/>
     </>
   );
 }

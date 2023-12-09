@@ -76,7 +76,7 @@ export default function NewUser({ onDone,walletAddress }) {
   const ndk = useNdk();
   const toast = useToast();
   const [session, setSession] = useAtom(sessionAtom);
-  const [wallet, setWallet] = useAtom(walletAtom);
+  const [walletSession, setWalletSession]  = useAtom(walletAtom);
   const [, setRelayList] = useAtom(relayListAtom);
   const [isPublishing, setIsPublishing] = useState(false);
   const [, setSteps] = useAtom(stepsAtom);
@@ -208,14 +208,14 @@ export default function NewUser({ onDone,walletAddress }) {
           await publishRelayList();
           setSession({
             method: "privkey",
-            pubkey,
-            privkey,
-            walletAddress
+            pubkey: pubkey,
+            privkey:privkey,
+            wallet: walletAddress
           });
-          setWallet({
-            walletAddress,
-            pubkey,
-            privkey
+          setWalletSession({
+            address:walletAddress,
+            nostrPubkey:pubkey,
+            nostrPrivkey:privkey
           })
         } catch (error) {
           console.error(error);
