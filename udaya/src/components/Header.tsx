@@ -54,7 +54,7 @@ export default function Header(props: FlexProps) {
             as={isHovering ? LogoAnimated : Logo}
             fill={logoColor}
           /> */}
-          <Image boxSize={14}   src="logo.png"></Image>
+          <Image boxSize={14}   src="/logo.png"></Image>
         </Link>
       </Flex>
       <Flex>
