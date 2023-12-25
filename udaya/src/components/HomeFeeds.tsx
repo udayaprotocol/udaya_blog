@@ -153,6 +153,7 @@ export default function HomeFeeds() {
   const hasFollows = pubkey && follows.length > 0;
   const [feed, setFeed] = useState(hasFollows ? Feeds.Follows : Feeds.Featured);
   const needsBackup = useNeedsBackup();
+  debugger;
   const lists = useMemo(() => {
     return Object.entries(peopleLists);
   }, [peopleLists]);

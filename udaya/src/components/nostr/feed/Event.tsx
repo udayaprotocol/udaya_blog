@@ -14,6 +14,7 @@ import Community from "./Community";
 import List from "@habla/components/nostr/List";
 
 export default function Event({ event }) {
+  debugger
   if (event.kind === LONG_FORM || event.kind === LONG_FORM_DRAFT) {
     return <LongFormNote event={event} />;
   }

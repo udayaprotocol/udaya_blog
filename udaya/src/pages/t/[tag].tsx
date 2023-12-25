@@ -11,6 +11,7 @@ const TagFeeds = dynamic(() => import("@habla/components/TagFeeds"), {
 
 export default function TagPage() {
   const router = useRouter();
+  debugger
   const { tag } = router.query;
   return (
     <>

@@ -290,6 +290,7 @@ export default function Markdown({
   highlights = [],
   onHighlightClick,
 }) {
+  debugger
   const highlighted = useMemo(
     () => processHighlights(content, highlights),
     [content, highlights]
